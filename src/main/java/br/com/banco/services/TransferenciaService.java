@@ -29,4 +29,8 @@ public class TransferenciaService {
         return transferenciaRepository.findAll();
     }
 
+    public List<Transferencia> listarTransferenciasPorConta(String numeroConta) {
+        return transferenciaRepository.findByContaId(Long.parseLong(numeroConta));
+    }
+
 }

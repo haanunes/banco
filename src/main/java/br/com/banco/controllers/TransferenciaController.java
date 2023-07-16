@@ -1,3 +1,5 @@
+package br.com.banco.controllers;
+
 
 import br.com.banco.entities.Transferencia;
 import br.com.banco.services.TransferenciaService;
@@ -32,5 +34,9 @@ public class TransferenciaController {
         return transferenciaService.save(transferencia);
     }
 
+    @GetMapping("/conta/{numeroConta}")
+    public List<Transferencia> listarTransferenciasPorConta(@PathVariable String numeroConta) {
+        return transferenciaService.listarTransferenciasPorConta(numeroConta);
+    }
 
 }
