@@ -1,6 +1,7 @@
 package br.com.banco.entities;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
-
 /**
  *
  * @author Hélder
@@ -41,5 +41,13 @@ public class Transferencia {
     @JoinColumn(name = "conta_id", referencedColumnName = "id_conta")
     private Conta conta;
 
-    // getters e setters
+    public BigDecimal getValor() {
+        return valor.setScale(2, RoundingMode.HALF_EVEN);
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor.setScale(2, RoundingMode.HALF_EVEN);
+    }
+
+    
 }
