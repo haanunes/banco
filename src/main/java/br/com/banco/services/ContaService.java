@@ -29,4 +29,8 @@ public class ContaService {
         return contaRepository.findAll();
     }
 
+    public void delete(Long id) {
+        contaRepository.deleteById(id);
+    }
+
 }
