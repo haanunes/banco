@@ -37,7 +37,7 @@ public class ContaController {
     public Conta atualizarConta(@PathVariable Long id, @RequestBody Conta conta) {
         Conta contaExistente = contaService.findById(id);
         if (contaExistente != null) {
-            conta.setIdConta(id); // Define o ID da conta a ser atualizada
+            conta.setId(id); // Define o ID da conta a ser atualizada
             return contaService.save(conta);
         } 
         return null;
