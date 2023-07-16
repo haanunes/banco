@@ -49,4 +49,8 @@ public class TransferenciaService {
     public List<Transferencia> listarTransferenciasPorOperadorTransacaoDeUmaConta(String numeroConta, String operadorTransacao) {
        return transferenciaRepository.findByNomeOperadorTransacaoAndContaId(operadorTransacao,Long.parseLong(numeroConta));
     }
+
+    public List<Transferencia> listarTransferenciasPorPeriodoEOperadorDeUmaConta(String numeroConta, LocalDateTime startDate, LocalDateTime endDate, String operadorTransacao) {
+        return transferenciaRepository.findByNomeOperadorTransacaoAndContaIdAndDataTransferenciaBetween(operadorTransacao,Long.parseLong(numeroConta),startDate,endDate);
+    }
 }

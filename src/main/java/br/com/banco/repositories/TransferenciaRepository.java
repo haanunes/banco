@@ -34,4 +34,6 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, Lo
     List<Transferencia> findByNomeOperadorTransacao(@Param("operadorTransacao") String operadorTransacao);
 
     public List<Transferencia> findByNomeOperadorTransacaoAndContaId(String operadorTransacao,Long id);
+
+    public List<Transferencia> findByNomeOperadorTransacaoAndContaIdAndDataTransferenciaBetween(String operadorTransacao, long parseLong, LocalDateTime startDate, LocalDateTime endDate);
 }

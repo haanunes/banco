@@ -52,12 +52,16 @@ public class TransferenciaController {
             return transferenciaService.findAll();
         }
         //com filtros
-        if (startDate != null && endDate != null) {
-            return transferenciaService.listarTransferenciasPorPeriodoDeUmaConta(numeroConta, startDate, endDate);
-        } else if (operadorTransacao != null && !operadorTransacao.equals("")) {
-            return transferenciaService.listarTransferenciasPorOperadorTransacaoDeUmaConta(numeroConta, operadorTransacao);
+        if ((startDate != null && endDate != null) && (operadorTransacao != null && !operadorTransacao.equals(""))) {
+            return transferenciaService.listarTransferenciasPorPeriodoEOperadorDeUmaConta(numeroConta, startDate, endDate, operadorTransacao);
         } else {
-            return transferenciaService.listarTransferenciasPorConta(numeroConta);
+            if (startDate != null && endDate != null) {
+                return transferenciaService.listarTransferenciasPorPeriodoDeUmaConta(numeroConta, startDate, endDate);
+            } else if (operadorTransacao != null && !operadorTransacao.equals("")) {
+                return transferenciaService.listarTransferenciasPorOperadorTransacaoDeUmaConta(numeroConta, operadorTransacao);
+            } else {
+                return transferenciaService.listarTransferenciasPorConta(numeroConta);
+            }
         }
     }
 
