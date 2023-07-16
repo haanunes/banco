@@ -29,4 +29,9 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, Lo
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("contaId") Long contaId);
+
+    @Query("SELECT t FROM Transferencia t WHERE t.nomeOperadorTransacao = :operadorTransacao")
+    List<Transferencia> findByNomeOperadorTransacao(@Param("operadorTransacao") String operadorTransacao);
+
+    public List<Transferencia> findByNomeOperadorTransacaoAndContaId(String operadorTransacao,Long id);
 }

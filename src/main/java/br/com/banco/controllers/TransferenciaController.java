@@ -1,6 +1,5 @@
 package br.com.banco.controllers;
 
-
 import br.com.banco.entities.Transferencia;
 import br.com.banco.services.TransferenciaService;
 import java.time.LocalDateTime;
@@ -36,24 +35,30 @@ public class TransferenciaController {
         return transferenciaService.save(transferencia);
     }
 
-    // Regras de negócio
-    
-    @GetMapping("/conta/{numeroConta}")
-    public List<Transferencia> listarTransferenciasPorConta(@PathVariable String numeroConta) {
-        return transferenciaService.listarTransferenciasPorConta(numeroConta);
-    }
-
-    
     @GetMapping("/periodo")
     public List<Transferencia> listarTransferenciasPorPeriodo(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endDate) {
         return transferenciaService.listarTransferenciasPorPeriodo(startDate, endDate);
     }
-    @GetMapping("/conta/{numeroConta}/periodo")
-    public List<Transferencia> listarTransferenciasPorPeriodo(@PathVariable String numeroConta,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endDate) {
-        return transferenciaService.listarTransferenciasPorPeriodoDeUmaConta(numeroConta, startDate, endDate);
+
+    @GetMapping("/conta/{numeroConta}")
+    public List<Transferencia> listarTransferencias(@PathVariable String numeroConta,
+            @RequestParam(required = false) String operadorTransacao,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endDate) {
+
+        if (numeroConta == null && numeroConta.equals("")) {
+            return transferenciaService.findAll();
+        }
+        //com filtros
+        if (startDate != null && endDate != null) {
+            return transferenciaService.listarTransferenciasPorPeriodoDeUmaConta(numeroConta, startDate, endDate);
+        } else if (operadorTransacao != null && !operadorTransacao.equals("")) {
+            return transferenciaService.listarTransferenciasPorOperadorTransacaoDeUmaConta(numeroConta, operadorTransacao);
+        } else {
+            return transferenciaService.listarTransferenciasPorConta(numeroConta);
+        }
     }
+
 }
