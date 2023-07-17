@@ -21,19 +21,16 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, Lo
 
     public List<Transferencia> findByContaId(Long numeroConta);
 
-    @Query("SELECT t FROM Transferencia t WHERE t.dataTransferencia BETWEEN :startDate AND :endDate")
-    List<Transferencia> findByDataTransferenciaBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    //Exemplo sem fazer uso de JPQL, apenas o Spring Data JPA
+    public List<Transferencia> findByNomeOperadorTransacaoContainingAndContaId(String operadorTransacao, Long id);
 
+    public List<Transferencia> findByNomeOperadorTransacaoContainingAndContaIdAndDataTransferenciaBetween(String operadorTransacao, long parseLong, LocalDateTime startDate, LocalDateTime endDate);
+
+    //Exemplo fazendo uso com @Query com uso de JPQL
     @Query("SELECT t FROM Transferencia t WHERE t.dataTransferencia BETWEEN :startDate AND :endDate AND t.conta.id = :contaId")
     List<Transferencia> findByDataTransferenciaBetweenAndContaId(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("contaId") Long contaId);
 
-    @Query("SELECT t FROM Transferencia t WHERE t.nomeOperadorTransacao = :operadorTransacao")
-    List<Transferencia> findByNomeOperadorTransacao(@Param("operadorTransacao") String operadorTransacao);
-
-    public List<Transferencia> findByNomeOperadorTransacaoAndContaId(String operadorTransacao,Long id);
-
-    public List<Transferencia> findByNomeOperadorTransacaoAndContaIdAndDataTransferenciaBetween(String operadorTransacao, long parseLong, LocalDateTime startDate, LocalDateTime endDate);
 }

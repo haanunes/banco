@@ -30,27 +30,21 @@ public class TransferenciaService {
         return transferenciaRepository.findAll();
     }
 
-    public List<Transferencia> listarTransferenciasPorConta(String numeroConta) {
-        return transferenciaRepository.findByContaId(Long.parseLong(numeroConta));
-    }
-
-    public List<Transferencia> listarTransferenciasPorPeriodo(LocalDateTime startDate, LocalDateTime endDate) {
-        return transferenciaRepository.findByDataTransferenciaBetween(startDate, endDate);
+    //regras de consultas
+    public List<Transferencia> listarTransferenciasPorPeriodoEOperadorDeUmaConta(String numeroConta, LocalDateTime startDate, LocalDateTime endDate, String operadorTransacao) {
+        return transferenciaRepository.findByNomeOperadorTransacaoContainingAndContaIdAndDataTransferenciaBetween(operadorTransacao, Long.parseLong(numeroConta), startDate, endDate);
     }
 
     public List<Transferencia> listarTransferenciasPorPeriodoDeUmaConta(String numeroConta, LocalDateTime startDate, LocalDateTime endDate) {
         return transferenciaRepository.findByDataTransferenciaBetweenAndContaId(startDate, endDate, Long.parseLong(numeroConta));
     }
-    
-    public List<Transferencia> listarTransferenciasPorOperadorTransacao(String operadorTransacao) {
-        return transferenciaRepository.findByNomeOperadorTransacao(operadorTransacao);
-    }
 
     public List<Transferencia> listarTransferenciasPorOperadorTransacaoDeUmaConta(String numeroConta, String operadorTransacao) {
-       return transferenciaRepository.findByNomeOperadorTransacaoAndContaId(operadorTransacao,Long.parseLong(numeroConta));
+        return transferenciaRepository.findByNomeOperadorTransacaoContainingAndContaId(operadorTransacao, Long.parseLong(numeroConta));
     }
 
-    public List<Transferencia> listarTransferenciasPorPeriodoEOperadorDeUmaConta(String numeroConta, LocalDateTime startDate, LocalDateTime endDate, String operadorTransacao) {
-        return transferenciaRepository.findByNomeOperadorTransacaoAndContaIdAndDataTransferenciaBetween(operadorTransacao,Long.parseLong(numeroConta),startDate,endDate);
+    public List<Transferencia> listarTransferenciasPorConta(String numeroConta) {
+        return transferenciaRepository.findByContaId(Long.parseLong(numeroConta));
     }
+
 }

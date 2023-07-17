@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @RestController
 @RequestMapping("/transferencias")
+@CrossOrigin(origins = "*") 
 public class TransferenciaController {
 
     private final TransferenciaService transferenciaService;
@@ -35,29 +36,27 @@ public class TransferenciaController {
         return transferenciaService.save(transferencia);
     }
 
-    @GetMapping("/periodo")
-    public List<Transferencia> listarTransferenciasPorPeriodo(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endDate) {
-        return transferenciaService.listarTransferenciasPorPeriodo(startDate, endDate);
-    }
-
+   
     @GetMapping("/conta/{numeroConta}")
     public List<Transferencia> listarTransferencias(@PathVariable String numeroConta,
             @RequestParam(required = false) String operadorTransacao,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endDate) {
-
+        //se o numero da conta não for informado, então pega todos.
         if (numeroConta == null && numeroConta.equals("")) {
             return transferenciaService.findAll();
         }
         //com filtros
+        //se todos os campos de busca estiverem preenchidos
         if ((startDate != null && endDate != null) && (operadorTransacao != null && !operadorTransacao.equals(""))) {
             return transferenciaService.listarTransferenciasPorPeriodoEOperadorDeUmaConta(numeroConta, startDate, endDate, operadorTransacao);
         } else {
-            if (startDate != null && endDate != null) {
+            //pesquisar apenas pelas datas
+            if ((startDate != null && endDate != null)&& (operadorTransacao == null || operadorTransacao.equals(""))) {
                 return transferenciaService.listarTransferenciasPorPeriodoDeUmaConta(numeroConta, startDate, endDate);
-            } else if (operadorTransacao != null && !operadorTransacao.equals("")) {
+            }
+            //pesquisar apenas pelo nome do operador
+            else if (operadorTransacao != null && !operadorTransacao.equals("") && (startDate == null && endDate == null)) {
                 return transferenciaService.listarTransferenciasPorOperadorTransacaoDeUmaConta(numeroConta, operadorTransacao);
             } else {
                 return transferenciaService.listarTransferenciasPorConta(numeroConta);
