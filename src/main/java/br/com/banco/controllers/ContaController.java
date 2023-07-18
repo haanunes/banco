@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/contas")
+@CrossOrigin(origins = "*") 
 public class ContaController {
 
     private final ContaService contaService;
